@@ -21,7 +21,6 @@ class HomeController extends Controller
 
 
     // update data
-
     public function update_user(Request $request, $id) {
         // Find the user by ID
         $data = User::find($id);
@@ -55,7 +54,6 @@ class HomeController extends Controller
 
 
     // delete user
-
     public function destroy($id){
         $delete_user = User::find($id);
 

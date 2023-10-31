@@ -195,5 +195,138 @@ $(document).ready(function () {
 
 
 
+    // abouts page
+    $('.abouts_editbtn').on('click', function(){
+        
+        var about_usrouteUrl = $(this).data('route-url');
+        var abouts_userId = $(this).data('user-id');
+        $('#aboutsupdate_id').val(abouts_userId);
+
+        $.ajax({
+            url: about_usrouteUrl,
+            method: 'GET',
+            success: function(data) {
+                // alert(JSON.stringify(data, null, 2));
+              if(data){
+                // alert(JSON.stringify(data, null, 2));
+            $('#title1').val(data.title);
+            $('#subtitle1').val(data.subtitle);
+            $('#description1').val(data.description);
+            $('#aboutuseditmodal').modal('show');
+              } else {
+                console.error('User not found');
+              }
+            },
+            error: function(xhr, status, error) {
+              // Handle errors
+              console.error(error);
+            }
+          });
+
+        // $('#aboutuseditmodal').modal('show');
+    });
+
+
+    // update aboutus
+    $('.aboutsupdatebtn').on('click', function(e) {
+        // e.preventDefault();
+       var aboutus_id = $('#aboutsupdate_id').val();
+
+       var token = $('input[name="_token"]').attr('value');
+
+       var data = {
+        'title': $('#title1').val(),
+        'subtitle': $('#subtitle1').val(),
+        'description': $('#description1').val(),
+    }
+
+
+       $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+        }
+    });
+
+    //    alert(id);
+    $.ajax({
+        url: '/update-user/aboutus/' + aboutus_id,
+        method: 'POST',
+        data: data,
+        dataType: 'json',
+        success: function(response){
+            $('#aboutuseditmodal').modal('hide');
+            if (response.success == true){
+                toastr.success(response.message);
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                toastr.error(response.message);
+            }
+        },
+
+        error: function(xhr, status, error) {
+            if (xhr.status == 419) {
+                // Handle the 419 (CSRF token mismatch) error here
+                toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+            } else {
+                // Handle other errors
+                toastr.error('An error occurred: ' + error);
+            }
+        }
+    });
+
+    });
+
+    // delete aboutus
+    $('.aboutusdeletebtn').on('click', function(){
+        $('#aboutusdeletemodal').modal('show');
+        var aboutus_delete_id = $(this).data('user-id');
+        $('#aboutus_delete_id').val(aboutus_delete_id);
+ 
+     });
+ 
+     $('.aboutusdelete').on('click', function(){
+ 
+         var aboutus_user_id = $('#aboutus_delete_id').val();
+         var token = $('input[name="_token"]').attr('value');
+ 
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': token
+             }
+         });
+ 
+         $.ajax({
+             url: '/delete/aboutus/' + aboutus_user_id,
+             method: 'DELETE',
+             dataType: "json",
+             success: function(response){
+                 $('#aboutusdeletemodal').modal('hide');
+                 if (response.success == true){
+                     toastr.success(response.message);
+                     setTimeout(function () {
+                         window.location.reload();
+                     }, 2000);
+                 } else {
+                     toastr.error(response.message);
+                 }
+             },
+ 
+             error: function(xhr, status, error) {
+                 if (xhr.status == 419) {
+                     // Handle the 419 (CSRF token mismatch) error here
+                     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                 } else {
+                     // Handle other errors
+                     toastr.error('An error occurred: ' + error);
+                 }
+             }
+         });
+ 
+     });
+
+
+
 
 });
