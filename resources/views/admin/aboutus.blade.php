@@ -28,7 +28,7 @@ active
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="datatable">
                         <thead class=" text-primary">
 
                             <th>

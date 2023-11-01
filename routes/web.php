@@ -44,10 +44,14 @@ Route::middleware([
     Route::get('/admin/aboutus/{id}', [DashboardController::class, 'fetch_aboutus'])->name('about.data');
     Route::post('/update-user/aboutus/{id}', [DashboardController::class, 'update_aboutus'])->name('aboutus.update');
     Route::delete('/delete/aboutus/{id}', [DashboardController::class, 'delete_aboutus'])->name('aboutus.delete');
+
+    Route::get('/home', [HomeController::class, 'index']);
+
+    Route::get('/fetch-data/{id}', [HomeController::class, 'fetch_data'])->name('fetch.data');
+    Route::post('/update-user/{id}', [HomeController::class, 'update_user']);
+    Route::delete('delete-user/{id}', [HomeController::class, 'destroy']);
+    Route::get('/admin/services', [HomeController::class, 'services'])->name('admin.services');
+
+
 });
 
-Route::get('/home', [HomeController::class, 'index']);
-
-Route::get('/fetch-data/{id}', [HomeController::class, 'fetch_data'])->name('fetch.data');
-Route::post('/update-user/{id}', [HomeController::class, 'update_user']);
-Route::delete('delete-user/{id}', [HomeController::class, 'destroy']);

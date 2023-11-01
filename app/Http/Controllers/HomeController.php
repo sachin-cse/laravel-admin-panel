@@ -70,5 +70,10 @@ class HomeController extends Controller
             ]);
         }
     }
+
+    // services page
+    public function services(){
+        return view('admin.services.index');
+    }
     
 }

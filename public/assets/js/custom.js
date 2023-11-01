@@ -35,7 +35,6 @@ $(document).ready(function () {
     });
 
     // toastr alert
-
     toastr.options = {
         positionClass: 'toast-bottom-right',
         timeOut:2000, 
@@ -193,8 +192,6 @@ $(document).ready(function () {
 
     });
 
-
-
     // abouts page
     $('.abouts_editbtn').on('click', function(){
         
@@ -225,7 +222,6 @@ $(document).ready(function () {
 
         // $('#aboutuseditmodal').modal('show');
     });
-
 
     // update aboutus
     $('.aboutsupdatebtn').on('click', function(e) {
@@ -326,7 +322,6 @@ $(document).ready(function () {
  
      });
 
-
-
-
+    //  data table
+    $('#datatable').DataTable();
 });

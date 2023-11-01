@@ -17,9 +17,11 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="../assets/demo/demo.css" rel="stylesheet" />
 
+    {{-- data tables --}}
+    <link href="{{asset('assets/css/dataTables.min.css')}}" rel="stylesheet" />
 
-   <link rel="stylesheet" type="text/css" 
-    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+   <link rel="stylesheet" type="text/css" href="{{asset('assets/css/toastr.min.css')}}">
 
     @csrf
 
@@ -31,10 +33,10 @@
         <div class="sidebar" data-color="orange">
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text logo-mini">
-                    CT
+                    SM
                 </a>
                 <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                    Creative Tim
+                    Admin dashboard
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -51,10 +53,10 @@
                             <p>Icons</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="../examples/map.html">
+                    <li class="@yield('Services')">
+                        <a href="{{route('admin.services')}}">
                             <i class="now-ui-icons location_map-big"></i>
-                            <p>Maps</p>
+                            <p>Services - Category</p>
                         </a>
                     </li>
                     <li class="@yield('Aboutus')">
@@ -81,12 +83,12 @@
                             <p>Typography</p>
                         </a>
                     </li>
-                    <li class="active-pro">
+                    {{-- <li class="active-pro">
                         <a href="../examples/upgrade.html">
                             <i class="now-ui-icons arrows-1_cloud-download-93"></i>
                             <p>Upgrade to PRO</p>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>
@@ -209,7 +211,8 @@
 <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
 <script src="../assets/demo/demo.js"></script>
 <script src="../assets/js/custom.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="{{asset('assets/js/toastr.min.js')}}"></script>
+<script src="{{asset('assets/js/dataTables.min.js')}}"></script>
 
 @yield('scripts')
 
