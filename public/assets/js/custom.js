@@ -324,4 +324,89 @@ $(document).ready(function () {
 
     //  data table
     $('#datatable').DataTable();
+
+    $('.services').on('click', function(){
+        var services_routeUrl = $(this).data('url');
+        // alert(services_routeUrl);
+
+        var token = $('input[name="_token"]').attr('value');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+            }
+        });
+
+        var services_formdata = {
+            services_name: $('#services_name').val(),
+            services_description: $('#services_description').val(),
+        };
+
+        $.ajax({
+            url: services_routeUrl,
+            method: 'POST',
+            data:services_formdata,
+            success: function(response){
+                // alert(JSON.stringify(services_formdata, null, 2));
+                if(response.success == true){
+                  
+                    toastr.success(response.message);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+
+            error: function(xhr, status, error) {
+                if (xhr.status == 419) {
+                    // Handle the 419 (CSRF token mismatch) error here
+                    toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                } else {
+                    // Handle other errors
+                    toastr.error('An error occurred: ' + error);
+                }
+            }
+
+        });
+
+    });
+
+    $('.services_edit').on('click', function(){
+
+        var routeUrl = $(this).data('route-url');
+        var userId = $(this).data('user-id');
+        $('#servicesupdate_id').val(userId);
+
+
+        var token = $('input[name="_token"]').attr('value');
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+            }
+        });
+
+
+        $.ajax({
+            url: routeUrl,
+            method: 'GET',
+            success: function(data) {
+                // alert(data);
+              if(data){
+                // alert(JSON.stringify(data, null, 2));
+            $('#services_name1').val(data.services_name);
+            $('#services_description1').val(data.services_description);
+            $('#serviceseditModal').modal('show');
+              } else {
+                console.error('Services not added');
+              }
+            },
+            error: function(xhr, status, error) {
+              // Handle errors
+              console.error(error);
+            }
+          });
+    });
 });

@@ -51,6 +51,8 @@ Route::middleware([
     Route::post('/update-user/{id}', [HomeController::class, 'update_user']);
     Route::delete('delete-user/{id}', [HomeController::class, 'destroy']);
     Route::get('/admin/services', [HomeController::class, 'services'])->name('admin.services');
+    Route::post('/admin/services/create', [HomeController::class, 'services_create'])->name('admin.services.create');
+    Route::get('/admin/services/edit/{id}', [HomeController::class, 'services_edit'])->name('admin.services.edit');
 
 
 });

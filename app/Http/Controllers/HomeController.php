@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Services;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -73,7 +74,35 @@ class HomeController extends Controller
 
     // services page
     public function services(){
-        return view('admin.services.index');
+        $services_data = Services::all();
+        return view('admin.services.index', ['services_data' => $services_data]);
+    }
+
+    public function services_create(Request $request){
+        $data = $request->all();
+
+        $services_create = new Services();
+
+        $services_create->fill($data);
+
+        if($services_create->save()){
+            return response()->json([
+                'success' => true,
+                'message' => 'Services added successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'message' => 'Something went wrong.'
+            ]);
+        }
+    }
+
+
+    public function services_edit(Request $request, $id){
+        $data = Services::find($id);
+
+        return response()->json($data);
     }
     
 }
