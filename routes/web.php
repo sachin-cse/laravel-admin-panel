@@ -53,7 +53,7 @@ Route::middleware([
     Route::get('/admin/services', [HomeController::class, 'services'])->name('admin.services');
     Route::post('/admin/services/create', [HomeController::class, 'services_create'])->name('admin.services.create');
     Route::get('/admin/services/edit/{id}', [HomeController::class, 'services_edit'])->name('admin.services.edit');
-
-
+    Route::post('/admin/services/update/{id}', [HomeController::class, 'services_update'])->name('admin.services.update');
+    Route::delete('/admin/services/delete/{id}', [HomeController::class, 'services_delete'])->name('admin.services.delete');
 });
 

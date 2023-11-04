@@ -325,6 +325,7 @@ $(document).ready(function () {
     //  data table
     $('#datatable').DataTable();
 
+    // services
     $('.services').on('click', function(){
         var services_routeUrl = $(this).data('url');
         // alert(services_routeUrl);
@@ -409,4 +410,101 @@ $(document).ready(function () {
             }
           });
     });
+
+    $('.update_services').on('click', function(){
+        var services_id = $('#servicesupdate_id').val();
+
+        // alert(services_id);
+
+        var token = $('input[name="_token"]').attr('value');
+ 
+        var services_data = {
+         'services_name': $('#services_name1').val(),
+         'services_description': $('#services_description1').val(),
+     }
+ 
+ 
+        $.ajaxSetup({
+         headers: {
+             'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+         }
+     });
+ 
+     //    alert(id);
+     $.ajax({
+         url: '/admin/services/update/' + services_id,
+         method: 'POST',
+         data: services_data,
+         dataType: 'json',
+         success: function(response){
+             $('#serviceseditModal').modal('hide');
+             if (response.success == true){
+                 toastr.success(response.message);
+                 setTimeout(function () {
+                     window.location.reload();
+                 }, 2000);
+             } else {
+                 toastr.error(response.message);
+             }
+         },
+ 
+         error: function(xhr, status, error) {
+             if (xhr.status == 419) {
+                 // Handle the 419 (CSRF token mismatch) error here
+                 toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+             } else {
+                 // Handle other errors
+                 toastr.error('An error occurred: ' + error);
+             }
+         }
+     });
+
+    });
+
+    $('.servicesdeletebtn').on('click', function(){
+        $('#servicesdeletemodal').modal('show');
+        var services_delete_id = $(this).data('user-id');
+        $('#services_delete_id').val(services_delete_id);
+ 
+     });
+ 
+     $('.servicesdelete').on('click', function(){
+ 
+         var services_delete_id = $('#services_delete_id').val();
+         var token = $('input[name="_token"]').attr('value');
+ 
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': token
+             }
+         });
+ 
+         $.ajax({
+             url: '/admin/services/delete/' + services_delete_id,
+             method: 'DELETE',
+             dataType: "json",
+             success: function(response){
+                 $('#servicesdeletemodal').modal('hide');
+                 if (response.success == true){
+                     toastr.success(response.message);
+                     setTimeout(function () {
+                         window.location.reload();
+                     }, 2000);
+                 } else {
+                     toastr.error(response.message);
+                 }
+             },
+ 
+             error: function(xhr, status, error) {
+                 if (xhr.status == 419) {
+                     // Handle the 419 (CSRF token mismatch) error here
+                     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                 } else {
+                     // Handle other errors
+                     toastr.error('An error occurred: ' + error);
+                 }
+             }
+         });
+ 
+     });
 });

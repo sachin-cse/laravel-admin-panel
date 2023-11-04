@@ -104,5 +104,52 @@ class HomeController extends Controller
 
         return response()->json($data);
     }
+
+    public function services_update(Request $request, $id) {
+        // Find the user by ID
+        $data = Services::find($id);
+
+    
+        if ($data) {
+            $data->services_name = $request->input('services_name');
+            $data->services_description = $request->input('services_description');
+    
+            $update_user = $data->update();
+    
+            if ($update_user) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Services status updated successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Something went wrong',
+                ]);
+            }
+        } else {
+            return response()->json([
+                'error' => true,
+                'message' => 'User not found',
+            ]);
+        }
+    }
+
+    public function services_delete($id){
+        $delete_services = Services::find($id);
+
+        if($delete_services){
+            $delete_services->delete();
+            return response()->json([
+                'success' => true,
+                'message' => 'Services deleted successfully.'
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'message' => 'Services not found.'
+            ]);
+        }
+    }
     
 }

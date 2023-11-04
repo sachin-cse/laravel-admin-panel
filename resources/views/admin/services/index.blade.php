@@ -72,7 +72,7 @@ active
                                 </td>
 
                                 <td>
-                                    <button type="button" class="btn btn-danger aboutusdeletebtn" data-target="#servicesdeletemodal" data-user-id=""> DELETE </button>
+                                    <button type="button" class="btn btn-danger servicesdeletebtn" data-target="#servicesdeletemodal" data-user-id="{{$services->id}}"> DELETE </button>
                                 </td>
                             </tr>
                         </tbody>
@@ -156,10 +156,38 @@ active
 
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary update_services" data-url={{}}>Update</button>
+            <button type="submit" class="btn btn-primary update_services">Update</button>
         </div>
 
       </div>
     </div>
+</div>
+
+{{-- delete model --}}
+<div class="modal fade" id="servicesdeletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Delete User </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="services_delete_id">
+                        Are you sure you want to  delete this service?
+                    </div>
+               
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="deletedata" class="btn btn-primary servicesdelete">Delete</button>
+                    </div>
+
+            </div>
+        </div>
 </div>
 @endsection
