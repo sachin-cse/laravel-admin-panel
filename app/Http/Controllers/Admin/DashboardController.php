@@ -24,8 +24,6 @@ class DashboardController extends Controller
 
     public function store_aboutus(Request $request) {
         $data = $request->all();
-
-        // dd($data);
         
         $about_us = new Aboutus();
         

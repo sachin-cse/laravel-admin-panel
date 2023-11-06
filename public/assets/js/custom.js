@@ -22,6 +22,7 @@ $(document).ready(function () {
             $('#email').val(data.email);
             $('#phone').val(data.phone);
             $('#usertype').val(data.usertype);
+            $('#img').val(data.image);
             $('#editmodal').modal('show');
               } else {
                 console.error('User not found');
@@ -53,43 +54,73 @@ $(document).ready(function () {
         'email': $('#email').val(),
         'phone': $('#phone').val(),
         'usertype': $('#usertype').val(),
+        'image': $('#img').val(),
     }
 
+    
+    var valid = true;
 
-       $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
-        }
-    });
+    if(data.name.trim() === ''){
+        toastr.error('Please enter your name.');
+        valid = false;
+    }
 
-    //    alert(id);
-    $.ajax({
-        url: '/update-user/' + id,
-        method: 'POST',
-        data: data,
-        dataType: 'json',
-        success: function(response){
-            $('#editmodal').modal('hide');
-            if (response.success == true){
-                toastr.success(response.message);
-                setTimeout(function () {
-                    window.location.reload();
-                }, 2000);
-            } else {
-                toastr.error(response.message);
+    if(data.email.trim() === ''){
+        toastr.error('Please enter your email.');
+        valid = false;
+    }
+
+    if(data.phone.trim() === ''){
+        toastr.error('Please enter your phone.');
+        valid = false;
+    }
+
+    if(data.usertype.trim() === ''){
+        toastr.error('Please select usertype.');
+        valid = false;
+    }
+
+    if(data.image.trim() === ''){
+        toastr.error('Please upload your image.');
+        valid = false;
+    }
+
+    if(valid){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
             }
-        },
-
-        error: function(xhr, status, error) {
-            if (xhr.status == 419) {
-                // Handle the 419 (CSRF token mismatch) error here
-                toastr.error('CSRF token mismatch. Please refresh the page and try again.');
-            } else {
-                // Handle other errors
-                toastr.error('An error occurred: ' + error);
+        });
+    
+        //    alert(id);
+        $.ajax({
+            url: '/update-user/' + id,
+            method: 'POST',
+            data: data,
+            dataType: 'json',
+            success: function(response){
+                $('#editmodal').modal('hide');
+                if (response.success == true){
+                    toastr.success(response.message);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+    
+            error: function(xhr, status, error) {
+                if (xhr.status == 419) {
+                    // Handle the 419 (CSRF token mismatch) error here
+                    toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                } else {
+                    // Handle other errors
+                    toastr.error('An error occurred: ' + error);
+                }
             }
-        }
-    });
+        });
+    }
 
     });
 
@@ -151,11 +182,6 @@ $(document).ready(function () {
 
         var token = $('input[name="_token"]').attr('value');
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
-            }
-        });
 
         var formData = {
             title: $('#title').val(),
@@ -163,32 +189,59 @@ $(document).ready(function () {
             description: $('#description').val(),
         };
 
-        $.ajax({
-            url: routeUrl,
-            method: 'POST',
-            data:formData,
-            success: function(response){
-                if(response.success == true){
-                    toastr.success(response.message);
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    toastr.error(response.message);
-                }
-            },
+        var valid = true;
 
-            error: function(xhr, status, error) {
-                if (xhr.status == 419) {
-                    // Handle the 419 (CSRF token mismatch) error here
-                    toastr.error('CSRF token mismatch. Please refresh the page and try again.');
-                } else {
-                    // Handle other errors
-                    toastr.error('An error occurred: ' + error);
-                }
-            }
+        if(formData.title.trim() === ''){
+            toastr.error('Please enter a title.');
+            valid = false;
+        }
 
-        });
+        if(formData.subtitle.trim() === ''){
+            toastr.error('Please enter a subtitle.');
+            valid = false;
+        }
+
+        if(formData.description.trim() === ''){
+            toastr.error('Please enter a description.');
+            valid = false;
+        }
+
+        if(valid){
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+                }
+            });
+
+
+            $.ajax({
+                url: routeUrl,
+                method: 'POST',
+                data:formData,
+                success: function(response){
+                    if(response.success == true){
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+    
+                error: function(xhr, status, error) {
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
+                }
+    
+            });
+        }
 
     });
 
@@ -236,8 +289,25 @@ $(document).ready(function () {
         'description': $('#description1').val(),
     }
 
+    var valid = true;
 
-       $.ajaxSetup({
+    if(data.title.trim() === ''){
+        toastr.error('Please enter a title.');
+        valid = false;
+    }
+
+    if(data.subtitle.trim() === ''){
+        toastr.error('Please enter a subtitle.');
+        valid = false;
+    }
+
+    if(data.description.trim() === ''){
+        toastr.error('Please enter a description.');
+        valid = false;
+    }
+
+if(valid){
+    $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
         }
@@ -271,6 +341,8 @@ $(document).ready(function () {
             }
         }
     });
+}
+   
 
     });
 
@@ -332,45 +404,59 @@ $(document).ready(function () {
 
         var token = $('input[name="_token"]').attr('value');
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
-            }
-        });
-
         var services_formdata = {
             services_name: $('#services_name').val(),
             services_description: $('#services_description').val(),
         };
 
-        $.ajax({
-            url: services_routeUrl,
-            method: 'POST',
-            data:services_formdata,
-            success: function(response){
-                // alert(JSON.stringify(services_formdata, null, 2));
-                if(response.success == true){
-                  
-                    toastr.success(response.message);
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    toastr.error(response.message);
-                }
-            },
+        var valid = true;
 
-            error: function(xhr, status, error) {
-                if (xhr.status == 419) {
-                    // Handle the 419 (CSRF token mismatch) error here
-                    toastr.error('CSRF token mismatch. Please refresh the page and try again.');
-                } else {
-                    // Handle other errors
-                    toastr.error('An error occurred: ' + error);
-                }
-            }
+        if(services_formdata.services_name.trim() === ''){
+            toastr.error('Please enter a service name.');
+            valid = false;
+        }
 
-        });
+        if(services_formdata.services_description.trim() === ''){
+            toastr.error('Please enter a service description.');
+            valid = false;
+        }
+
+        if(valid){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+                }
+            });
+
+            $.ajax({
+                url: services_routeUrl,
+                method: 'POST',
+                data:services_formdata,
+                success: function(response){
+                    // alert(JSON.stringify(services_formdata, null, 2));
+                    if(response.success == true){
+                      
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+    
+                error: function(xhr, status, error) {
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
+                }
+    
+            });
+        }
 
     });
 
@@ -422,42 +508,55 @@ $(document).ready(function () {
          'services_name': $('#services_name1').val(),
          'services_description': $('#services_description1').val(),
      }
- 
- 
+
+     var valid = true;
+
+     if( services_data.services_name.trim() === ''){
+         toastr.error('Please enter a service name.');
+         valid = false;
+     }
+
+     if( services_data.services_description.trim() === ''){
+         toastr.error('Please enter a service description.');
+         valid = false;
+     }
+
+     if(valid){
         $.ajaxSetup({
-         headers: {
-             'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
-         }
-     });
- 
-     //    alert(id);
-     $.ajax({
-         url: '/admin/services/update/' + services_id,
-         method: 'POST',
-         data: services_data,
-         dataType: 'json',
-         success: function(response){
-             $('#serviceseditModal').modal('hide');
-             if (response.success == true){
-                 toastr.success(response.message);
-                 setTimeout(function () {
-                     window.location.reload();
-                 }, 2000);
-             } else {
-                 toastr.error(response.message);
-             }
-         },
- 
-         error: function(xhr, status, error) {
-             if (xhr.status == 419) {
-                 // Handle the 419 (CSRF token mismatch) error here
-                 toastr.error('CSRF token mismatch. Please refresh the page and try again.');
-             } else {
-                 // Handle other errors
-                 toastr.error('An error occurred: ' + error);
-             }
-         }
-     });
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+            }
+        });
+    
+        //    alert(id);
+        $.ajax({
+            url: '/admin/services/update/' + services_id,
+            method: 'POST',
+            data: services_data,
+            dataType: 'json',
+            success: function(response){
+                $('#serviceseditModal').modal('hide');
+                if (response.success == true){
+                    toastr.success(response.message);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    toastr.error(response.message);
+                }
+            },
+    
+            error: function(xhr, status, error) {
+                if (xhr.status == 419) {
+                    // Handle the 419 (CSRF token mismatch) error here
+                    toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                } else {
+                    // Handle other errors
+                    toastr.error('An error occurred: ' + error);
+                }
+            }
+        });
+     }
 
     });
 
@@ -507,4 +606,9 @@ $(document).ready(function () {
          });
  
      });
+
+
+    //  form validation abouts-us
+
+    $()
 });

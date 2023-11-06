@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Services;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
@@ -17,6 +18,12 @@ class HomeController extends Controller
         // dd($request);
         $data = User::find($id);
 
+        // $request->validate([
+        //     'title' => 'required|unique:posts|max:255',
+        //     'author.name' => 'required',
+        //     'author.description' => 'required',
+        // ]);
+
         return response()->json($data);
     }
 
@@ -26,11 +33,18 @@ class HomeController extends Controller
         // Find the user by ID
         $data = User::find($id);
 
+
+        $filename = time() . '.' . $request->image->extension();
+        $request->image->storeAs('public/upload', $filename);
+
+        // dd($filename);
+
     
         if ($data) {
             $data->name = $request->input('name');
             $data->phone = $request->input('phone');
             $data->usertype = $request->input('usertype');
+            $data->image = $filename;
     
             $update_user = $data->update();
     
@@ -80,6 +94,26 @@ class HomeController extends Controller
 
     public function services_create(Request $request){
         $data = $request->all();
+
+        $rules = [
+            'services_name' => 'required|string|max:255',
+            'services_description' => 'required|string|max:255',
+        ];
+
+        $messages = [
+            'services_name.required' => 'services name must be required',
+            'services_description.required' => 'services description must be required',
+        ];
+
+        $validator = Validator::make($data, $rules, $messages);
+
+        if($validator->fails()){
+            return response()->json([
+                'error' => true,
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ]);
+        }
 
         $services_create = new Services();
 

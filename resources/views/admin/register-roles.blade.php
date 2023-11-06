@@ -210,7 +210,6 @@ active
 </div>
 
 {{-- edit modal pop up --}}
-
 <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -222,7 +221,7 @@ active
                     </button>
                 </div>
 
-                    <div class="modal-body">
+                <div class="modal-body">
 
                         <input type="hidden" id="update_id">
 
@@ -240,15 +239,24 @@ active
                             <label> Phone </label>
                             <input type="text" name="phone" id="phone" class="form-control" required>
                         </div>
-
+                    
+                    <div class="form-group">
                     <label>User Role</label>
                     <select name="usertype" id="usertype" class="form-control" required>
                         <option value="admin">Admin</option>
                         <option value="user">User</option>
                         <!-- Add more options as needed -->
                     </select>
-
                     </div>
+
+                    <div class="form-group">
+                        <label> Upload Photo </label>
+                        <input type="file" name="image" id="img" class="form-control" required>
+                    </div>
+
+                </div>
+
+                   
                
                 
                     <div class="modal-footer">

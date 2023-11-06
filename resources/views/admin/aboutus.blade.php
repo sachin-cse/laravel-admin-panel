@@ -54,13 +54,18 @@ active
                              </th>
                             
                         </thead>
+
+                        @php
+                        $cn = 1;
+                        @endphp
+
                         @foreach($data as $value)
                         <tbody>
                             
                             <tr>
 
                                 <td>
-                                    {{$value->id}}
+                                    {{$cn++}}
                                 </td>
 
                                 <td>
@@ -90,9 +95,10 @@ active
             </div>
         </div>
     </div>
+</div>
 
 
-    {{-- aboutus modal --}}
+{{-- aboutus modal --}}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -109,12 +115,12 @@ active
 
             <div class="form-group">
               <label for="title" class="col-form-label">Title</label>
-              <input type="text" class="form-control" id="title" name="title">
+              <input type="text" class="form-control" id="title" name="title" required>
             </div>
 
             <div class="form-group">
                 <label for="subtitle" class="col-form-label">Subtitle</label>
-                <input type="text" class="form-control" id="subtitle" name="subtitle">
+                <input type="text" class="form-control" id="subtitle" name="subtitle" required>
             </div>
 
             <div class="form-group">
@@ -206,5 +212,5 @@ active
         </div>
 </div>
 
-</div>
+
 @endsection

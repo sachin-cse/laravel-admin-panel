@@ -48,14 +48,17 @@ active
                             
                         </thead>
 
+                        @php
+                        $cn = 1;
+                        @endphp
+
                         @foreach($services_data as $services)
-                    
                         <tbody>
                             
                             <tr>
 
                                 <td>
-                                    {{$services->id}}
+                                    {{$cn++}}
                                 </td>
 
                                 <td>
@@ -89,7 +92,6 @@ active
 
 
 {{-- add category form --}}
-
 <div class="modal fade" id="servicesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -105,13 +107,19 @@ active
 
 
             <div class="form-group">
-              <label for="title" class="col-form-label">Services Category Name</label>
+              <label for="title" class="col-form-label">Services Category Name<span class="text-danger">*</span></label>
               <input type="text" class="form-control" id="services_name" name="services_name">
+              @error('services_name')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
             </div>
 
             <div class="form-group">
-              <label for="description" class="col-form-label">Services Description</label>
+              <label for="description" class="col-form-label">Services Description<span class="text-danger">*</span></label>
               <textarea class="form-control" id="services_description" name="services_description"></textarea>
+              @error('services_description')
+                <div class="text-danger">{{ $message }}</div>
+            @enderror
             </div>
             
         </div>
