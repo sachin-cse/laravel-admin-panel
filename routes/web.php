@@ -55,5 +55,10 @@ Route::middleware([
     Route::get('/admin/services/edit/{id}', [HomeController::class, 'services_edit'])->name('admin.services.edit');
     Route::post('/admin/services/update/{id}', [HomeController::class, 'services_update'])->name('admin.services.update');
     Route::delete('/admin/services/delete/{id}', [HomeController::class, 'services_delete'])->name('admin.services.delete');
+    Route::get('/admin/services/banner', [HomeController::class, 'banner'])->name('admin.services.banner');
+    Route::post('admin/services/banner/store', [HomeController::class, 'banner_store'])->name('admin.store.banner');
+    Route::get('admin/services/banner/edit/{id}', [HomeController::class, 'banner_edit'])->name('admin.edit.banner');
+    Route::post('/admin/services/banner/update/{id}', [HomeController::class, 'banner_update'])->name('admin.update.banner');
+    Route::delete('/admin/services/banner/delete/{id}', [HomeController::class, 'banner_delete'])->name('admin.delete.banner');
 });
 

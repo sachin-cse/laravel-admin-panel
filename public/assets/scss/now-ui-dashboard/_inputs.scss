@@ -311,14 +311,14 @@ textarea.form-control{
 
 // Input files - hide actual input - requires specific markup in the sample.
 .form-group input[type=file] {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
-  top: 0;
+  top: 30px;
   right: 0;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 40px;
   z-index: 100;
 }
 

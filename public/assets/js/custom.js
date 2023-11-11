@@ -22,7 +22,7 @@ $(document).ready(function () {
             $('#email').val(data.email);
             $('#phone').val(data.phone);
             $('#usertype').val(data.usertype);
-            $('#img').val(data.image);
+            // $('#img').val(data.image);
             $('#editmodal').modal('show');
               } else {
                 console.error('User not found');
@@ -54,7 +54,7 @@ $(document).ready(function () {
         'email': $('#email').val(),
         'phone': $('#phone').val(),
         'usertype': $('#usertype').val(),
-        'image': $('#img').val(),
+        // 'image': $('#img')[0].files[0],
     }
 
     
@@ -80,7 +80,7 @@ $(document).ready(function () {
         valid = false;
     }
 
-    if(data.image.trim() === ''){
+    if(!data.image){
         toastr.error('Please upload your image.');
         valid = false;
     }
@@ -97,6 +97,7 @@ $(document).ready(function () {
             url: '/update-user/' + id,
             method: 'POST',
             data: data,
+            enctype: 'multipart/form-data',
             dataType: 'json',
             success: function(response){
                 $('#editmodal').modal('hide');
@@ -607,8 +608,199 @@ if(valid){
  
      });
 
+    //  service image
+    $('#addbannerimage').on('submit', function(e){
+        e.preventDefault();
+        var valid = true;
 
-    //  form validation abouts-us
+        var exten = $("#banner_image").val().split('.').pop().toLowerCase();
 
-    $()
+        // alert(exten);
+
+        if($('#banner_name').val().trim() == ''){
+            toastr.error('Please enter banner name');
+            valid = false;
+        }
+
+        if($('#banner_image').val() == ''){
+            toastr.error('Please upload a banner image');
+            valid = false;
+        } else if(jQuery.inArray(exten, ['jpg', 'jpeg', 'png']) == -1){
+            toastr.error('Invalid file extension please upload only jpg,png,jpeg');
+            valid = false;
+        }
+
+        if(valid){
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/admin/services/banner/store',
+                method: 'POST',
+                dataType: "json",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    // alert(data);
+                    $('#bannerModal').modal('hide');
+                    if (response.success == true){
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+    
+                error: function(xhr, status, error) {
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
+                }
+            });
+        }
+
+    });
+
+    // edit service image
+    $('.editBanner').on('click', function(e){
+        e.preventDefault();
+
+        var routeUrl = $(this).data('route-url');
+        var BannerId = $(this).data('user-id');
+        // alert(BannerId);
+        $('#bannerupdate_id').val(BannerId);
+
+        var token = $('input[name="_token"]').attr('value');
+        var base_url = window.location.origin;
+
+        // alert(base_url);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+            }
+        });
+
+        // var formData = new FormData(this);
+        
+        $.ajax({
+            url: routeUrl,
+            method: 'GET',
+            success: function(data) {
+                // console.log(data);
+              if(data.success == true){
+                // alert(JSON.stringify(data, null, 2));
+                
+            $('#banner_name1').val(data.data.banner_name);
+            $('#bannerImagePreview').attr('src', base_url + '/upload/' + data.data.banner_image);
+            $('#bannerEditModal').modal('show');
+              } else {
+                console.error('Services Banner not added');
+              }
+            },
+            error: function(xhr, status, error) {
+              // Handle errors
+              console.error(error);
+            }
+          });
+        
+        
+    });
+
+    // update the banner image
+    $('#updatebannerimage').on('submit', function(e){
+        e.preventDefault();
+
+        var bannerupdate_id = $('#bannerupdate_id').val();
+        var formData = new FormData(this);
+
+            $.ajax({
+                url: '/admin/services/banner/update/' + bannerupdate_id,
+                method: 'POST',
+                dataType: "json",
+                data:formData,
+                contentType: false,
+                processData: false,
+                success: function(response){
+                    // alert(data);
+                    $('#bannerModal').modal('hide');
+                    if (response.success == true){
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                },
+    
+                error: function(xhr, status, error) {
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
+                }
+            });
+        
+
+    });
+
+    // delete services banner
+    $('.deleteBanner').on('click', function(){
+        $('#bannerDeletemodal').modal('show');
+        var services_delete_id = $(this).data('user-id');
+        $('#servicesbanner_delete_id').val(services_delete_id);
+ 
+     });
+ 
+     $('.servicesBannerdelete').on('click', function(){
+ 
+         var servicesBanner_delete_id = $('#servicesbanner_delete_id').val();
+         var token = $('input[name="_token"]').attr('value');
+ 
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': token
+             }
+         });
+ 
+         $.ajax({
+             url: '/admin/services/banner/delete/' + servicesBanner_delete_id,
+             method: 'DELETE',
+             dataType: "json",
+             success: function(response){
+                 $('#bannerDeletemodal').modal('hide');
+                 if (response.success == true){
+                     toastr.success(response.message);
+                 } else {
+                     toastr.error(response.message);
+                 }
+
+                 setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+             },
+ 
+             error: function(xhr, status, error) {
+                 if (xhr.status == 419) {
+                     // Handle the 419 (CSRF token mismatch) error here
+                     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                 } else {
+                     // Handle other errors
+                     toastr.error('An error occurred: ' + error);
+                 }
+             }
+         });
+ 
+     });
+
 });

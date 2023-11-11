@@ -220,7 +220,8 @@ active
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
+                
+                    @csrf
                 <div class="modal-body">
 
                         <input type="hidden" id="update_id">
@@ -248,13 +249,8 @@ active
                         <!-- Add more options as needed -->
                     </select>
                     </div>
-
-                    <div class="form-group">
-                        <label> Upload Photo </label>
-                        <input type="file" name="image" id="img" class="form-control" required>
-                    </div>
-
                 </div>
+           
 
                    
                
