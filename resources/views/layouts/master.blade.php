@@ -78,6 +78,14 @@
                             <p>Banner Image</p>
                         </a>
                     </li>
+
+                    
+                    <li class="@yield('Communication')">
+                        <a href="{{route('admin.serivices.communication')}}">
+                            <i class="far fa-comment users_single-02"></i>
+                            <p>Communicaion</p>
+                        </a>
+                    </li>
                     {{-- <li class="">
                         <a href="../examples/tables.html">
                             <i class="now-ui-icons design_bullet-list-67"></i>
@@ -220,6 +228,7 @@
 <script src="{{asset('assets/js/custom.js')}}"></script>
 <script src="{{asset('assets/js/toastr.min.js')}}"></script>
 <script src="{{asset('assets/js/dataTables.min.js')}}"></script>
+<script src="{{asset('assets/js/CkEditor.js')}}"></script>
 
 @yield('scripts')
 

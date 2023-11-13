@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\User;
+use App\Mail\SendEmail;
 use App\Models\Services;
 use Illuminate\Http\Request;
 use App\Models\ServiceBanner;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+
 
 class HomeController extends Controller
 {
@@ -327,5 +329,34 @@ class HomeController extends Controller
                 'message' => 'Services banner not found.'
             ]);
         }
+    }
+
+    // communication
+    public function communication(){
+        return view('admin.services.communication');
+    }
+
+    // send email
+    public function sendEmail(Request $request){
+
+        // dd($request);
+
+        $mailData = [
+            'title' => $request->title,
+            'description' => $request->description,
+        ];
+
+        if(Mail::to($request->email)->send(new SendEMail($mailData))){
+            return response()->json([
+                'success' => true,
+                'message' => 'email sent successfully'
+            ]);
+        } else {
+            return response()->json([
+                'error' => true,
+                'message' => 'something went wrong'
+            ]);
+        }
+
     }
 }

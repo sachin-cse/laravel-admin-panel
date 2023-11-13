@@ -80,10 +80,6 @@ $(document).ready(function () {
         valid = false;
     }
 
-    if(!data.image){
-        toastr.error('Please upload your image.');
-        valid = false;
-    }
 
     if(valid){
         $.ajaxSetup({
@@ -103,12 +99,14 @@ $(document).ready(function () {
                 $('#editmodal').modal('hide');
                 if (response.success == true){
                     toastr.success(response.message);
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
+                  
                 } else {
                     toastr.error(response.message);
                 }
+
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
             },
     
             error: function(xhr, status, error) {
@@ -802,5 +800,64 @@ if(valid){
          });
  
      });
+
+    //  CK Editor5
+    ClassicEditor
+    .create(document.querySelector('#description'))
+    .catch(error => {
+        console.error(error);
+    });
+
+    // send email via ajax
+    $('#sendEmail').on('submit', function(e){
+        e.preventDefault();
+
+        var valid  = true;
+
+        if($('#title').val().trim() == ''){
+            toastr.error('title is required');
+            valid = false;
+        }
+
+        if($('#email').val().trim() == ''){
+            toastr.error('email is required');
+            valid = false;
+        }
+
+        if($('#description').val().trim() == ''){
+            toastr.error('description is required');
+            valid = false;
+        }
+
+        if(valid){
+            $.ajax({
+                url: '/admin/services/sendemail',
+                method: 'POST',
+                dataType: "json",
+                data: $(this).serialize(),
+                success: function(response){
+                    if (response.success == true){
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+   
+                    setTimeout(function () {
+                       window.location.reload();
+                   }, 2000);
+                },
+    
+                error: function(xhr, status, error) {
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
+                }
+            });
+        }
+    });
 
 });

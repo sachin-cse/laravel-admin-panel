@@ -60,5 +60,7 @@ Route::middleware([
     Route::get('admin/services/banner/edit/{id}', [HomeController::class, 'banner_edit'])->name('admin.edit.banner');
     Route::post('/admin/services/banner/update/{id}', [HomeController::class, 'banner_update'])->name('admin.update.banner');
     Route::delete('/admin/services/banner/delete/{id}', [HomeController::class, 'banner_delete'])->name('admin.delete.banner');
+    Route::get('/admin/services/communication', [HomeController::class, 'communication'])->name('admin.serivices.communication');
+    Route::post('/admin/services/sendemail', [HomeController::class, 'sendEmail'])->name('admin.send.email');
 });
 
