@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController;
+use App\Models\User;
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 
 /*
@@ -29,7 +30,9 @@ Route::middleware([
     'admin',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('admin.dashboard');
+        
+        $total_users = User::all()->count();
+        return view('admin.dashboard', ['total_users' => $total_users]);
     });
 
     Route::get('/register-roles', [DashboardController::class, 'register_roles'])->name('users.roles');
@@ -62,5 +65,8 @@ Route::middleware([
     Route::delete('/admin/services/banner/delete/{id}', [HomeController::class, 'banner_delete'])->name('admin.delete.banner');
     Route::get('/admin/services/communication', [HomeController::class, 'communication'])->name('admin.serivices.communication');
     Route::post('/admin/services/sendemail', [HomeController::class, 'sendEmail'])->name('admin.send.email');
+    Route::get('/admin/activity/log', [HomeController::class, 'activityLog'])->name('admin.activity.log');
+
+    Route::get('/search', [HomeController::class, 'search'])->name('search');
 });
 

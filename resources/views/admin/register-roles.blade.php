@@ -24,6 +24,7 @@ active
             </div>
             <div class="card-body">
                 <div class="table-responsive">
+                    @if(!$users->isEmpty())
                     <table class="table">
                         <thead class=" text-primary">
                             <th>
@@ -75,6 +76,9 @@ active
                             @endforeach
                         </tbody>
                     </table>
+                    @else
+                    <p class="text-center">No Records Found</p>
+                    @endif
                 </div>
             </div>
         </div>

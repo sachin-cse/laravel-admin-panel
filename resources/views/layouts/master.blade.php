@@ -41,7 +41,7 @@
             </div>
             <div class="sidebar-wrapper">
                 <ul class="nav">
-                    <li class="@yield('Admin dashboard')">
+                    <li class="@yield('dashboard')">
                         <a href="{{url('/dashboard')}}">
                             <i class="now-ui-icons design_app"></i>
                             <p>Dashboard</p>
@@ -86,6 +86,14 @@
                             <p>Communicaion</p>
                         </a>
                     </li>
+
+
+                    <li class="@yield('ActivityLog')">
+                        <a href="{{route('admin.activity.log')}}">
+                            <i class="fas fa-history users_single-02"></i>
+                            <p>Activity log</p>
+                        </a>
+                    </li>
                     {{-- <li class="">
                         <a href="../examples/tables.html">
                             <i class="now-ui-icons design_bullet-list-67"></i>
@@ -127,14 +135,19 @@
                         <span class="navbar-toggler-bar navbar-kebab"></span>
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
-                        <form>
+
+                        @if(Auth::check() && Route::is('users.roles'))
+                        <form method="GET" action="{{route('search')}}">
                             <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" placeholder="Search...">
+                                <input type="text" value="" class="form-control" name = "q" placeholder="Search...">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons ui-1_zoom-bold"></i>
                                 </span>
                             </div>
                         </form>
+
+                        @endif
+                       
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 {{-- <a class="nav-link" href="#pablo">

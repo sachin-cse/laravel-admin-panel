@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
+// use Request;
 use App\Models\User;
 use App\Mail\SendEmail;
 use App\Models\Services;
-use Illuminate\Http\Request;
+use App\Models\Activitylog;
 use App\Models\ServiceBanner;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -38,12 +41,12 @@ class HomeController extends Controller
     
         if ($data) {
             // Check if an image was uploaded in the request
-            if ($request->hasFile('image')) {
-                $attachment = $request->file('image');
-                $attachmentName = time() . '_' . $attachment->getClientOriginalName();
-                $attachment->move(public_path('upload'), $attachmentName);
-                $data->image = $attachmentName;
-            }
+            // if ($request->hasFile('image')) {
+            //     $attachment = $request->file('image');
+            //     $attachmentName = time() . '_' . $attachment->getClientOriginalName();
+            //     $attachment->move(public_path('upload'), $attachmentName);
+            //     $data->image = $attachmentName;
+            // }
     
             $data->name = $request->input('name');
             $data->phone = $request->input('phone');
@@ -358,5 +361,39 @@ class HomeController extends Controller
             ]);
         }
 
+    }
+
+    // activity log
+    public function activityLog(Request $request){
+
+        // dd(Request::ip());
+        // $device = request()->userAgent();
+        // dd($device); 
+
+        $activity_log = new Activitylog();
+
+
+        $data = [
+            'current_logged_id' => Auth::user()->id,
+            'user_name' => Auth::user()->name,
+            'user_type' => Auth::user()->usertype,
+            'ip_address' => $request->ip(),
+            'device_access' => request()->userAgent()
+
+        ];
+
+        if(!Activitylog::where(['current_logged_id' => Auth::user()->id])->exists()){
+            $activity_log->create($data);
+        }
+        return view('admin.activity_log', ['data' => [$data]]);
+    }
+
+
+    public function search(Request $request){
+
+        $searchTerm = $request->input('q');
+        $suggestion = User::where('name', 'like', '%' .$searchTerm. '%')->get();
+        // dd($suggestion);
+        return view('admin.register-roles', ['users' => $suggestion]);
     }
 }
