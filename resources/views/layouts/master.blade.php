@@ -136,17 +136,18 @@
                     </button>
                     <div class="collapse navbar-collapse justify-content-end" id="navigation">
 
-                        @if(Auth::check() && Route::is('users.roles'))
-                        <form method="GET" action="{{route('search')}}">
+                        {{-- @if(Auth::check() && Route::is('users.roles')) --}}
+                        <form method="GET" action="{{route('search')}}" autocomplete="off">
                             <div class="input-group no-border">
-                                <input type="text" value="" class="form-control" name = "q" placeholder="Search...">
+                                <input type="text" value="" class="form-control" id="autoSearch" name = "q" placeholder="Search...">
                                 <span class="input-group-addon">
                                     <i class="now-ui-icons ui-1_zoom-bold"></i>
                                 </span>
                             </div>
+                            <ul id="searchResults" class="results-list"></ul>
                         </form>
 
-                        @endif
+                        {{-- @endif --}}
                        
                         <ul class="navbar-nav">
                             <li class="nav-item">

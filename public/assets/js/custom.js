@@ -860,4 +860,48 @@ if(valid){
         }
     });
 
+
+    // auto complete search
+    $('#autoSearch').on('input', function(){
+        var APP_URL = window.location.origin;
+        var s = $(this).val();
+        // alert(s);
+    
+        if (s.trim() !== '') {
+            $.ajax({
+                url: APP_URL+'/autocomplete/search',
+                method: 'GET',
+                data: {s: s},
+                success: function(data){
+                    var resultsContainer = $('#searchResults');
+                    resultsContainer.empty();
+    
+                    if (data.length > 0) {
+                        $.each(data, function(index, result){
+                            resultsContainer.append('<li class="result-item">' + result.name + '</li>');
+                        });
+                    } else {
+                        resultsContainer.append('<li class="not-found">Not Found</li>');
+                    }
+                },
+            });
+        } else {
+            // Handle the case when the search input is blank
+            var resultsContainer = $('#searchResults');
+            resultsContainer.empty(); // Clear previous results or handle as needed
+        }
+    });
+
+    $(document).on('click', '#searchResults li', function(){
+        var selected = $(this).text();
+        $('#autoSearch').val(selected);
+        $('#searchResults').empty();
+        quickSearch(selected);
+    });
+
+    function quickSearch(selected) {
+        var APP_URL = window.location.origin;
+        window.location.href = APP_URL + '/search?q=' + selected;
+    }
+
 });

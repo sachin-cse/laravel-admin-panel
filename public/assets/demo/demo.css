@@ -75,3 +75,48 @@
 .modal-footer {
   border-top: 0px !important;
 }
+/* SD */
+.content .card.flex-column {
+  text-align: center;
+  padding: 10px 20px 15px;
+  -webkit-box-shadow:  3px 3px 6px 0px rgb(249 99 50);
+  box-shadow: 3px 3px 6px 0px rgb(249 99 50);
+}
+.main-panel > .content .row {
+  gap: 20px 0px;
+  align-items: center;
+}
+
+.content .card.flex-column .card-title {
+  font-size: 26px;
+  font-weight: 600;
+  background: #121FCF;
+  background: linear-gradient(to right, #22466e 0%,#f96332 50%, #244871 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.content .card.flex-column .card-body .text-center {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 36px;
+  color: #214269;
+  margin: 0;
+}
+/* SD */
+
+/* sachin  */
+.results-list {
+  list-style: none; /* Remove bullets from the list */
+}
+
+.result-item {
+  display: block; /* Display list items inline */
+  margin-right: 10px; /* Adjust spacing between individual result items */
+}
+
+.not-found {
+  font-style: italic;
+  color: red;
+  /* Add more styles as needed */
+}
+

@@ -396,4 +396,10 @@ class HomeController extends Controller
         // dd($suggestion);
         return view('admin.register-roles', ['users' => $suggestion]);
     }
+
+    public function autocomplete(Request $request){
+        $data = User::select('name')->where('name', 'like', $request->s . '%')->get();
+        // dd($data);
+        return response()->json($data);
+    }
 }

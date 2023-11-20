@@ -68,5 +68,7 @@ Route::middleware([
     Route::get('/admin/activity/log', [HomeController::class, 'activityLog'])->name('admin.activity.log');
 
     Route::get('/search', [HomeController::class, 'search'])->name('search');
+
+    Route::get('/autocomplete/search', [HomeController::class, 'autocomplete'])->name('autocomplete.search');
 });
 
