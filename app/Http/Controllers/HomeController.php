@@ -366,26 +366,8 @@ class HomeController extends Controller
     // activity log
     public function activityLog(Request $request){
 
-        // dd(Request::ip());
-        // $device = request()->userAgent();
-        // dd($device); 
-
-        $activity_log = new Activitylog();
-
-
-        $data = [
-            'current_logged_id' => Auth::user()->id,
-            'user_name' => Auth::user()->name,
-            'user_type' => Auth::user()->usertype,
-            'ip_address' => $request->ip(),
-            'device_access' => request()->userAgent()
-
-        ];
-
-        if(!Activitylog::where(['current_logged_id' => Auth::user()->id])->exists()){
-            $activity_log->create($data);
-        }
-        return view('admin.activity_log', ['data' => [$data]]);
+        $data = Activitylog::all();
+        return view('admin.activity_log', ['data' => $data]);
     }
 
 

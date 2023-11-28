@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class DashboardController extends Controller
 {
     public function register_roles(){
-        $users = User::all();
+        $users = User::paginate(1);
         // dd($users);
         return view('admin.register-roles')->with('users', $users);
     }

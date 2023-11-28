@@ -74,11 +74,18 @@ active
                             </tr>
                             
                             @endforeach
+
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-center">
+                    {{$users->links('pagination::simple-bootstrap-5')}}
+                    </div>
+
+                    {{ $users->currentPage() }} of {{ $users->lastPage() }}
                     @else
                     <p class="text-center">No Records Found</p>
                     @endif
+
                 </div>
             </div>
         </div>

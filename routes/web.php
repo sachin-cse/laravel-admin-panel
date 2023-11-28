@@ -2,8 +2,11 @@
 
 use App\Models\User;
 
+use App\Models\Activitylog;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\Admin\DashboardController;
 
 
@@ -32,6 +35,19 @@ Route::middleware([
     Route::get('/dashboard', function () {
         
         $total_users = User::all()->count();
+        $activity_log = new Activitylog();
+        $data = [
+            'current_logged_id' => Auth::user()->id,
+            'user_name' => Auth::user()->name,
+            'user_type' => Auth::user()->usertype,
+            'ip_address' => request()->ip(),
+            'device_access' => request()->userAgent()
+
+        ];
+
+        if(!Activitylog::where(['current_logged_id' => Auth::user()->id])->exists()){
+            $activity_log->create($data);
+        }
         return view('admin.dashboard', ['total_users' => $total_users]);
     });
 
@@ -70,5 +86,6 @@ Route::middleware([
     Route::get('/search', [HomeController::class, 'search'])->name('search');
 
     Route::get('/autocomplete/search', [HomeController::class, 'autocomplete'])->name('autocomplete.search');
+    Route::get('/activity-log/download/{format}/{id}', [ActivityLogController::class, 'downloadFormat'])->name('download.Format');
 });
 

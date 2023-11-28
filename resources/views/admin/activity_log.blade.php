@@ -51,6 +51,10 @@ active
                             <th>
                                 Device Access
                              </th>
+
+                             <th>
+                                Download Format
+                             </th>
                             
                         </thead>
 
@@ -59,8 +63,8 @@ active
                         @endphp
 
                         {{-- @dd($data); --}}
-                        @foreach($data as $value)
                         <tbody>
+                        @foreach($data as $value)
                             
                             <tr>
 
@@ -69,27 +73,31 @@ active
                                 </td>
 
                                 <td>
-                                    {{$value['current_logged_id']}}
+                                    {{$value->current_logged_id}}
                                 </td>
 
                                 <td>
-                                    {{$value['ip_address']}}
+                                    {{$value->ip_address}}
                                 </td>
 
                                 <td>
-                                    {{$value['user_type']}}
+                                    {{$value->user_type}}
                                 </td>
 
                                 <td>
-                                    {{$value['user_name']}}
+                                    {{$value->user_name}}
+                                </td>
+ 
+                                <td>
+                                    {{$value->device_access}}
                                 </td>
 
                                 <td>
-                                    {{$value['device_access']}}
+                                    <a href="{{route('download.Format', ['format' => 'pdf', 'id' => $value['id']])}}" class="downloadLog" data-url="">PDF</a> | <a href="{{route('download.Format', ['format' => 'excel', 'id' => $value['id']])}}" class="downloadLog" data-url="">Excel</a>
                                 </td>
                             </tr>
-                        </tbody>
                     @endforeach
+                </tbody>
                     </table>
                 </div>
             </div>

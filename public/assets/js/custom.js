@@ -904,4 +904,30 @@ if(valid){
         window.location.href = APP_URL + '/search?q=' + selected;
     }
 
+
+    // download the pdf or excel file
+    // $(document).on('click', '.downloadLog', function(){
+    //     var dataUrl = $(this).data('url');
+
+    //     var token = $('input[name="_token"]').attr('value');
+ 
+    //     $.ajaxSetup({
+    //         headers: {
+    //             'X-CSRF-TOKEN': token
+    //         }
+    //     });
+
+    //     $.ajax({
+    //         url: dataUrl,
+    //         method: 'GET',
+    //         success: function(response){
+    //             if(response.message){
+    //                 toastr.success(response.message);
+    //             } else {
+    //                 toastr.error(response.message);
+    //             }
+    //         }
+    //     })
+    // });
+
 });
