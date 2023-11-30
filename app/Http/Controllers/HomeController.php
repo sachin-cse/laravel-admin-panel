@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-// use Request;
 use App\Models\User;
+// use Request;
 use App\Mail\SendEmail;
 use App\Models\Services;
+use App\Mail\TemplateMail;
 use App\Models\Activitylog;
+use Illuminate\Http\Request;
 use App\Models\ServiceBanner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -349,7 +350,7 @@ class HomeController extends Controller
             'description' => $request->description,
         ];
 
-        if(Mail::to($request->email)->send(new SendEMail($mailData))){
+        if(Mail::to($request->email)->send(new TemplateMail($mailData))){
             return response()->json([
                 'success' => true,
                 'message' => 'email sent successfully'
