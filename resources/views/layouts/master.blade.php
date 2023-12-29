@@ -94,6 +94,13 @@
                             <p>Activity log</p>
                         </a>
                     </li>
+
+                    <li class="@yield('Testimonial')">
+                        <a href="{{route('admin.testimonial')}}">
+                            <i class="far fa-images users_single-02"></i>
+                            <p>Testimonial</p>
+                        </a>
+                    </li>
                     {{-- <li class="">
                         <a href="../examples/tables.html">
                             <i class="now-ui-icons design_bullet-list-67"></i>

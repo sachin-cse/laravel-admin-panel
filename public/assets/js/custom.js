@@ -904,30 +904,70 @@ if(valid){
         window.location.href = APP_URL + '/search?q=' + selected;
     }
 
+    // testimonial search
+    $('#testimonial').on('submit', function(e){
+        e.preventDefault();
 
-    // download the pdf or excel file
-    // $(document).on('click', '.downloadLog', function(){
-    //     var dataUrl = $(this).data('url');
+        var valid = true;
 
-    //     var token = $('input[name="_token"]').attr('value');
- 
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': token
-    //         }
-    //     });
+        var exten = $("#file").val().split('.').pop().toLowerCase();
 
-    //     $.ajax({
-    //         url: dataUrl,
-    //         method: 'GET',
-    //         success: function(response){
-    //             if(response.message){
-    //                 toastr.success(response.message);
-    //             } else {
-    //                 toastr.error(response.message);
-    //             }
-    //         }
-    //     })
-    // });
+
+        if($('#name').val().trim() == ''){
+            toastr.error('name is required');
+            valid = false;
+        } else if($('#description').val().trim() == ''){
+            toastr.error('description is required');
+            valid = false;
+        } else if($('#file').val().trim() == ''){
+            toastr.error('image field is required');
+            valid = false;
+        } else if(jQuery.inArray(exten, ['jpg', 'jpeg', 'png']) === -1){
+            toastr.error('Invalid file extension please upload only jpg,png,jpeg');
+            valid = false;
+        } else if($('#rating').val() == ''){
+            toastr.error('please rate us');
+            valid = false;
+        }
+
+        if(valid){
+            var formData = new FormData(this);
+
+            $.ajax({
+                url:'/admin/testimonial/store',
+                method: 'POST',
+                dataType: 'json',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success:function(response){
+                    if(response.success == true){
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            })
+        }
+    })
+
+    // rating for testimonial
+    $('.star').on('click', function(){
+        var forval = parseInt($(this).attr('for'));
+        // alert(forval);
+        $('#rating').val(forval);
+        $('.star').each(function(index){
+            if((index+1)<=forval){
+                $(this).removeClass('fa-star');
+                $(this).addClass('fa-star-o');
+            } else {
+                $(this).addClass('fa-star');
+                $(this).removeClass('fa-star-o');
+            }
+        })
+    })
 
 });
