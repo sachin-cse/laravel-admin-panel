@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Validator;
 class TestimonialController extends Controller
 {
     public function index(){
-        return view('admin.testimonial');
+        $testimonial = Testimonial::all();
+        // dd($testimonial);
+        return view('admin.testimonial', ['testimonial' => $testimonial]);
     }
 
     public function testimonial_store(Request $request){

@@ -60,7 +60,7 @@
                         </a>
                     </li>
                     <li class="@yield('Aboutus')">
-                        <a href="{{url('/about-us')}}">
+                        <a href="{{route('aboutus.view')}}">
                             <i class="now-ui-icons ui-1_bell-53"></i>
                             <p>About us</p>
                         </a>

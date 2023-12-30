@@ -90,7 +90,7 @@ $(document).ready(function () {
     
         //    alert(id);
         $.ajax({
-            url: '/update-user/' + id,
+            url: '/admin/update-user/' + id,
             method: 'POST',
             data: data,
             enctype: 'multipart/form-data',
@@ -314,7 +314,7 @@ if(valid){
 
     //    alert(id);
     $.ajax({
-        url: '/update-user/aboutus/' + aboutus_id,
+        url: '/admin/update-user/aboutus/' + aboutus_id,
         method: 'POST',
         data: data,
         dataType: 'json',
