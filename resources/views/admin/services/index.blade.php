@@ -22,10 +22,12 @@ active
                 <button type="button" class="btn btn-blue float-right" data-toggle="modal" data-target="#servicesModal">Add Services</button>
                 <h4 class="card-title"> Services </h4>
             </div>
+            <button style="margin: 5px;" class="btn btn-danger btn-xs delete-all" data-url="">Delete All</button>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table" id="datatable">
                         <thead class=" text-primary">
+                            <th><input type="checkbox" id="check_all"></th>
 
                             <th>
                                 Id
@@ -34,8 +36,13 @@ active
                             <th>
                                 Services Name
                             </th>
+
                             <th>
                                 Services Description
+                            </th>
+
+                            <th>
+                                Services Title
                             </th>
                             
                             <th>
@@ -56,6 +63,7 @@ active
                         <tbody>
                             
                             <tr>
+                                <td><input type="checkbox" class="checkbox" data-id="{{$services->id}}"></td>
 
                                 <td>
                                     {{$cn++}}
@@ -67,6 +75,10 @@ active
 
                                 <td>
                                   {{$services->services_description}}
+                                </td>
+
+                                <td>
+                                    {{$services->slug}}
                                 </td>
 
 
@@ -121,6 +133,14 @@ active
                 <div class="text-danger">{{ $message }}</div>
             @enderror
             </div>
+
+            <div class="form-group">
+                <label for="title" class="col-form-label">Services Title<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="services_title" name="services_title">
+                @error('services_title')
+                  <div class="text-danger">{{ $message }}</div>
+              @enderror
+              </div>
             
         </div>
 
@@ -158,6 +178,12 @@ active
             <div class="form-group">
               <label for="description" class="col-form-label">Services Description</label>
               <textarea class="form-control" id="services_description1" name="services_description"></textarea>
+            </div>
+
+            
+            <div class="form-group">
+                <label for="services_title" class="col-form-label">Services Title<span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="services_title1" name="services_title">
             </div>
             
         </div>

@@ -12,6 +12,7 @@ use App\Models\ServiceBanner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 
 class HomeController extends Controller
@@ -102,19 +103,23 @@ class HomeController extends Controller
     }
 
     public function services_create(Request $request){
-        $data = $request->all();
+        // $data = $request->all();
+
+        // dd($request->all());
 
         $rules = [
             'services_name' => 'required|string|max:255',
             'services_description' => 'required|string|max:255',
+            'services_title' => 'required|string|max:255'
         ];
 
         $messages = [
             'services_name.required' => 'services name must be required',
             'services_description.required' => 'services description must be required',
+            'services_title.required' => 'services title must be required',
         ];
 
-        $validator = Validator::make($data, $rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if($validator->fails()){
             return response()->json([
@@ -126,7 +131,13 @@ class HomeController extends Controller
 
         $services_create = new Services();
 
-        $services_create->fill($data);
+        $services_create->services_name = $request->services_name;
+        $services_create->services_description = $request->services_description;
+        $services_create->slug = Str::slug($request->services_title);
+
+        // dd($services_create);
+
+        // dd($services_create->fill($data));
 
         if($services_create->save()){
             return response()->json([
@@ -144,7 +155,7 @@ class HomeController extends Controller
 
     public function services_edit(Request $request, $id){
         $data = Services::find($id);
-
+        // dd($data);
         return response()->json($data);
     }
 
@@ -152,10 +163,13 @@ class HomeController extends Controller
         // Find the user by ID
         $data = Services::find($id);
 
+        // dd($data);
+
     
         if ($data) {
             $data->services_name = $request->input('services_name');
             $data->services_description = $request->input('services_description');
+            $data->slug = Str::slug($request->input('services_title'));
     
             $update_user = $data->update();
     
@@ -384,5 +398,12 @@ class HomeController extends Controller
         $data = User::select('name')->where('name', 'like', $request->s . '%')->get();
         // dd($data);
         return response()->json($data);
+    }
+
+    // bulk deletes function for services
+    public function bulkDelete(Request $request){
+        $ids = $request->strids;
+        Services::whereIn('id', explode(',', $ids))->delete();
+        return response()->json(['status' => true, 'message'=>'services deleted successfully']);
     }
 }

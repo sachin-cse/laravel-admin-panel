@@ -394,7 +394,7 @@ if(valid){
      });
 
     //  data table
-    $('#datatable').DataTable();
+    // $('#datatable').DataTable();
 
     // services
     $('.services').on('click', function(){
@@ -406,7 +406,11 @@ if(valid){
         var services_formdata = {
             services_name: $('#services_name').val(),
             services_description: $('#services_description').val(),
+            services_title: $('#services_title').val(),
         };
+
+        // alert(services_formdata.services_title);
+        
 
         var valid = true;
 
@@ -417,6 +421,11 @@ if(valid){
 
         if(services_formdata.services_description.trim() === ''){
             toastr.error('Please enter a service description.');
+            valid = false;
+        }
+
+        if(services_formdata.services_title.trim() === ''){
+            toastr.error('Please enter a service title.');
             valid = false;
         }
 
@@ -484,6 +493,7 @@ if(valid){
                 // alert(JSON.stringify(data, null, 2));
             $('#services_name1').val(data.services_name);
             $('#services_description1').val(data.services_description);
+            $('#services_title1').val(data.slug);
             $('#serviceseditModal').modal('show');
               } else {
                 console.error('Services not added');
@@ -506,18 +516,24 @@ if(valid){
         var services_data = {
          'services_name': $('#services_name1').val(),
          'services_description': $('#services_description1').val(),
+         'services_title': $('#services_title1').val(),
      }
 
      var valid = true;
 
-     if( services_data.services_name.trim() === ''){
+     if(services_data.services_name.trim() === ''){
          toastr.error('Please enter a service name.');
          valid = false;
      }
 
-     if( services_data.services_description.trim() === ''){
+     if(services_data.services_description.trim() === ''){
          toastr.error('Please enter a service description.');
          valid = false;
+     }
+
+     if(services_data.services_title.trim() === ''){
+        toastr.error('Please enter a service title.');
+        valid = false;
      }
 
      if(valid){
@@ -970,4 +986,105 @@ if(valid){
         })
     })
 
+
+    // multiple delete
+    $('#check_all').on('click', function(e){
+        // alert(1);
+        if($(this).is(':checked', true)){
+            $(".checkbox").prop('checked', true);  
+        } else {
+            $(".checkbox").prop('checked', false);  
+        }
+    });
+
+    $('.checkbox').on('click', function(e){
+        // alert($('.checkbox').length);
+        if($('.checkbox:checked').length == $('.checkbox').length){
+            $('#check_all').prop('checked',true);
+        } else {
+            $('#check_all').prop('checked',false);
+        }
+    });
+
+    // ajax call for multiple delete
+
+    $('.delete-all').on('click', function(e){
+        var idsArr = [];
+
+        var token = $('input[name="_token"]').attr('value');
+ 
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token
+            }
+        });
+
+        $(".checkbox:checked").each(function(){
+            idsArr.push($(this).attr('data-id'));
+        });
+
+        if(idsArr.length == 0){
+            toastr.error('Please select atleast one record to delete');
+        } else {
+            // alert(1);
+            var strids = idsArr.join(',');
+            $.ajax({
+                url: '/admin/services/bulkDelete',
+                method: 'DELETE',
+                dataType: 'json',
+                data: {strids: strids},
+                success: function(response){
+                    toastr.success(response.message);
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                }
+            })
+        }
+    });
+
+    // testimonial edit
+    $('.testimonial_editbtn').on('click', function(e){
+        e.preventDefault();
+
+        var route_url = $(this).data('route-url');
+        var user_id = $(this).data('user-id');
+
+        $('#testimonialupdate_id').attr('value', user_id);
+
+        var base_url = window.location.origin;
+
+        
+        var token = $('input[name="_token"]').attr('value');
+        // var base_url = window.location.origin;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': token // Include the CSRF token in the request headers
+            }
+        });
+
+        $.ajax({
+            url: route_url,
+            method: 'GET',
+            success: function(data){
+                if(data){
+                    $('#imageView').html('');
+                    $('#name1').val(data.name);
+                    $('#imageView').append(`
+                        <img src="${base_url}/upload/${data.image}" width="100px" height="100px">`);
+                    $('#rating1').val(data.rating);
+                    $('#description1').val(data.description);
+                    // $('#img').val(data.image);
+                    $('#testimonialeditmodal').modal('show');
+                } else {
+                    toastr.error('something went wrong');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(error);
+            }
+        });
+
+    });
 });

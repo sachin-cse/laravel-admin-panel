@@ -84,6 +84,7 @@ Route::group([
     Route::delete('/services/banner/delete/{id}', [HomeController::class, 'banner_delete'])->name('admin.delete.banner');
     Route::get('/services/communication', [HomeController::class, 'communication'])->name('admin.serivices.communication');
     Route::post('/services/sendemail', [HomeController::class, 'sendEmail'])->name('admin.send.email');
+    Route::delete('/services/bulkDelete', [HomeController::class, 'bulkDelete'])->name('admin.services.bulkDelete');
     Route::get('/activity/log', [HomeController::class, 'activityLog'])->name('admin.activity.log');
 
     Route::get('/search', [HomeController::class, 'search'])->name('search');
@@ -92,5 +93,6 @@ Route::group([
     Route::get('/activity-log/download/{format}/{id}', [ActivityLogController::class, 'downloadFormat'])->name('download.Format');
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('admin.testimonial');
     Route::post('/testimonial/store', [TestimonialController::class, 'testimonial_store'])->name('admin.testimonial.store');
+    Route::get('/testimonial/edit/{id}', [TestimonialController::class, 'testimonial_edit'])->name('admin.testimonial.edit');
 });
 

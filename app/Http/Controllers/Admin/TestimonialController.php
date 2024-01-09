@@ -67,4 +67,11 @@ class TestimonialController extends Controller
             ]);
         }
     }
+
+    // edit part
+    public function testimonial_edit(Request $request, $id){
+        $testimonial = Testimonial::find($id);
+        // dd($testimonial);
+        return response()->json($testimonial);
+    }
 }
