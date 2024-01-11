@@ -1070,10 +1070,15 @@ if(valid){
             success: function(data){
                 if(data){
                     $('#imageView').html('');
+                    $('#ratingstar1').html('');
                     $('#name1').val(data.name);
-                    $('#imageView').append(`
+                    $('#imageView').html(`
                         <img src="${base_url}/upload/${data.image}" width="100px" height="100px">`);
-                    $('#rating1').val(data.rating);
+                    $('#ratingstar1').append(`<label for="testimonial_title" class="col-form-label">Rating</label><br>`)
+                    for(var i = data.rating; i>=1; i--){
+                        $('#ratingstar1').append(`<i class="star fa fa-star"></i>`);
+
+                    }
                     $('#description1').val(data.description);
                     // $('#img').val(data.image);
                     $('#testimonialeditmodal').modal('show');
@@ -1087,4 +1092,7 @@ if(valid){
         });
 
     });
+
+    // testimonial update
+    
 });

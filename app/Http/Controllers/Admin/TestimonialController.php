@@ -53,7 +53,7 @@ class TestimonialController extends Controller
         $store_testimonial->name = $request->name;
         $store_testimonial->image = $testimonial_image;
         $store_testimonial->rating = $request->rating;
-        $store_testimonial->description = $request->description;
+        $store_testimonial->description = strip_tags($request->description);
 
         if($store_testimonial->save()){
             return response()->json([

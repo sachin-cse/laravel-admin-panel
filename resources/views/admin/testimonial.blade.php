@@ -199,13 +199,7 @@ active
 
                             <br>
     
-                            <div class="form-group">
-                                <label for="testimonial_title" class="col-form-label">Rating</label>
-                                <i class="star fa fa-star" for="1"></i>
-                                <i class="star fa fa-star" for="2"></i>
-                                <i class="star fa fa-star" for="3"></i>
-                                <i class="star fa fa-star" for="4"></i>
-                                <i class="star fa fa-star" for="5"></i>
+                            <div class="form-group" id="ratingstar1">
                                 <input type="hidden" name="rating" id="rating1">
                             </div>
     
