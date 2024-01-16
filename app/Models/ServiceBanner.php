@@ -11,5 +11,5 @@ class ServiceBanner extends Model
 
     protected $table = 'service_banner';
 
-    protected $fillable = ['banner_name', 'banner_image'];
+    protected $fillable = ['banner_name', 'banner_image', 'service_id'];
 }

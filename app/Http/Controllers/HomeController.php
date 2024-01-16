@@ -131,6 +131,8 @@ class HomeController extends Controller
 
         $services_create = new Services();
 
+        $service_id = new ServiceBanner();
+
         $services_create->services_name = $request->services_name;
         $services_create->services_description = $request->services_description;
         $services_create->slug = Str::slug($request->services_title);
@@ -140,6 +142,8 @@ class HomeController extends Controller
         // dd($services_create->fill($data));
 
         if($services_create->save()){
+            $service_id->service_id = $services_create->id;
+            $service_id->save();
             return response()->json([
                 'success' => true,
                 'message' => 'Services added successfully.'

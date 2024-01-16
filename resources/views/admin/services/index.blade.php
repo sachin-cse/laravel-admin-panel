@@ -22,7 +22,7 @@ active
                 <button type="button" class="btn btn-blue float-right" data-toggle="modal" data-target="#servicesModal">Add Services</button>
                 <h4 class="card-title"> Services </h4>
             </div>
-            <button style="margin: 5px;" class="btn btn-danger btn-xs delete-all" data-url="">Delete All</button>
+            <button style="margin: 5px;" class="btn btn-danger btn-xs delete-all" data-url="{{route('admin.services.bulkDelete')}}">Delete All</button>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table" id="datatable">

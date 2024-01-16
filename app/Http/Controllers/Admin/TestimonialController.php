@@ -74,4 +74,51 @@ class TestimonialController extends Controller
         // dd($testimonial);
         return response()->json($testimonial);
     }
+
+    // update testimonial
+    public function testimonial_update(Request $request, $id){
+
+        if(!empty($id)){
+            $testimonial = Testimonial::find($id);
+            $testimonial->name = $request->name;
+            $testimonial->description = $request->description;
+            if($request->hasFile('file')){
+                if($testimonial->image){
+                    $oldImagepath = public_path('upload') . '/' . $testimonial->image;
+        
+                    if(file_exists($oldImagepath)){
+                        unlink($oldImagepath);
+                    }
+                }
+        
+                $newImageName = time() . '.' . $request->file('file')->getClientOriginalExtension();
+                $request->file('file')->move(public_path('upload'), $newImageName);
+        
+                $testimonial->image = $newImageName;
+            }
+            // $testimonial->image = $request->image;
+            // dd($testimonial);
+        } else {
+            return response()->json(['error' => true, 'message' => 'Records not found']);
+        }
+    }
+
+    // delete testimonial
+     public function deleteTestimonial(Request $request, $id){
+
+        if(!(empty($id))){
+            $testimonial = Testimonial::find($id);
+            $testimonial->delete();
+            return response()->json(['success' => true, 'message' => 'Testimonial deleted successfully']);
+        } else {
+            return response()->json(['error' => true, 'message' => 'Records not found']);
+        }
+     }
+
+    //  bulk delete
+    public function bulkDelete(Request $request){
+        $ids = $request->strids;
+        Testimonial::whereIn('id', explode(',', $ids))->delete();
+        return response()->json(['status' => true, 'message'=>'Testimonials deleted successfully']);
+    }
 }

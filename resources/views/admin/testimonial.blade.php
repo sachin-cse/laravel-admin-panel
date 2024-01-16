@@ -22,10 +22,15 @@ active
                 <button type="button" class="btn btn-blue float-right" data-toggle="modal" data-target="#exampleModal">Add Testimonial</button>
                 <h4 class="card-title"> Testimonial Table </h4>
             </div>
+
+            <button style="margin: 5px;" class="btn btn-danger btn-xs delete-all" data-url="{{route('admin.testimonial.bulkDelete')}}">Delete All</button>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table" id="datatable">
                         <thead class=" text-primary">
+
+                            <th><input type="checkbox" id="check_all"></th>
+
 
                             <th>
                                 Id
@@ -65,6 +70,8 @@ active
                         <tbody>
                             
                             <tr>
+
+                                <td><input type="checkbox" class="checkbox" data-id="{{$value->id}}"></td>
 
                                 <td>
                                     {{$cn++}}
@@ -125,11 +132,18 @@ active
                             <label for="testimonial_title" class="col-form-label">Name</label>
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
+                        @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
 
                         <div class="form-group">
                             <label for="testimonial_title" class="col-form-label">Upload photo</label>
                             <input type="file" class="form-control" id="file" name="file">
                         </div>
+
+                        @error('file')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
 
                         <br>
 
@@ -147,6 +161,10 @@ active
                             <label for="description" class="col-form-label">Description<span class="text-danger">*</span></label>
                             <textarea class="form-control" id="description" name="description"></textarea>
                         </div>
+
+                        @error('description')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
                         
                     </div>
 
@@ -174,9 +192,9 @@ active
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-
+            <form action="#" id="updatetestimonial" enctype="multipart/form-data">
                 <div class="modal-body"> 
-                    <form action="#"  enctype="multipart/form-data" id="testimonialEdit" method="get">
+                  
                         <div class="modal-body">
 
                             <input type="hidden" id="testimonialupdate_id">
@@ -212,11 +230,39 @@ active
     
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary updateTestimonial">Update</button>
-                        </div>
-                    </form>     
+                        </div>    
                 </div>
+            </form>
                 
             </div>
+
+            </div>
+        </div>
+</div>
+
+{{-- delete --}}
+<div class="modal fade" id="testimonialdeletemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> Delete User </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                    <div class="modal-body">
+
+                        <input type="hidden" id="testimonial_delete_id">
+                        Are you sure you want to  delete this user?
+                    </div>
+               
+                
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" name="deletedata" class="btn btn-primary testimonialdelete">Delete</button>
+                    </div>
 
             </div>
         </div>

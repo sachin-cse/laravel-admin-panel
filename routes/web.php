@@ -94,5 +94,8 @@ Route::group([
     Route::get('/testimonial', [TestimonialController::class, 'index'])->name('admin.testimonial');
     Route::post('/testimonial/store', [TestimonialController::class, 'testimonial_store'])->name('admin.testimonial.store');
     Route::get('/testimonial/edit/{id}', [TestimonialController::class, 'testimonial_edit'])->name('admin.testimonial.edit');
+    Route::put('/testimonial/update/{id}', [TestimonialController::class, 'testimonial_update'])->name('admin.testimonial.update');
+    Route::delete('/testimonial/delete/{id}', [TestimonialController::class, 'deleteTestimonial'])->name('admin.testimonial.delete');
+    Route::delete('/testimonial/bulkDelete', [TestimonialController::class, 'bulkDelete'])->name('admin.testimonial.bulkDelete');
 });
 

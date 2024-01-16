@@ -1011,6 +1011,8 @@ if(valid){
     $('.delete-all').on('click', function(e){
         var idsArr = [];
 
+        var data_url = $(this).attr('data-url');
+
         var token = $('input[name="_token"]').attr('value');
  
         $.ajaxSetup({
@@ -1029,7 +1031,7 @@ if(valid){
             // alert(1);
             var strids = idsArr.join(',');
             $.ajax({
-                url: '/admin/services/bulkDelete',
+                url: data_url,
                 method: 'DELETE',
                 dataType: 'json',
                 data: {strids: strids},
@@ -1074,6 +1076,8 @@ if(valid){
                     $('#name1').val(data.name);
                     $('#imageView').html(`
                         <img src="${base_url}/upload/${data.image}" width="100px" height="100px">`);
+                    $('#imageView').append(`
+                        <input type="hidden" name="hidden_image" value = "${data.image}">`);
                     $('#ratingstar1').append(`<label for="testimonial_title" class="col-form-label">Rating</label><br>`)
                     for(var i = data.rating; i>=1; i--){
                         $('#ratingstar1').append(`<i class="star fa fa-star"></i>`);
@@ -1093,6 +1097,107 @@ if(valid){
 
     });
 
-    // testimonial update
+    // update testimonial
+    $('.updateTestimonial').on('click', function(e){
+        e.preventDefault();
+
+        var testimonialupdate_id = $('#testimonialupdate_id').val();
+        // alert(testimonialupdate_id);
+        // var formData = new FormData(this);
+
+        // alert($(this).serialize());
+       var name = $('#name1').val();
+       var description = $('#description1').val();
+
+        var valid = true;
+
+        if($('#name1').val() == ''){
+            toastr.error('name field is required');
+            valid = false;
+        }else if($('#description1').val() == ''){
+            toastr.error('description field is required');
+            valid = false;
+        } 
+
+        if(valid){
+            $.ajax({
+                url: '/admin/testimonial/update/' + testimonialupdate_id,
+                method: 'PUT',
+                dataType: "json",
+                data:{id:testimonialupdate_id, name:name, description:description},
+                success: function(response){
+                    $('#testimonialeditmodal').modal('hide');
+                    // if (response.success == true){
+                    //     toastr.success(response.message);
+                    // } else {
+                    //     toastr.error(response.message);
+                    // }
+
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                },
+    
+                error: function(xhr, status, error) {
+                    // if (xhr.status == 419) {
+                    //     // Handle the 419 (CSRF token mismatch) error here
+                    //     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    // } else {
+                    //     // Handle other errors
+                    //     toastr.error('An error occurred: ' + error);
+                    // }
+                }
+            });
+        }
+    });
+
+    // testimonial delete
+    $('.testimonialdeletebtn').on('click', function(){
+        $('#testimonialdeletemodal').modal('show');
+        var testimonial_delete_id = $(this).data('user-id');
+        $('#testimonial_delete_id').val(testimonial_delete_id);
+ 
+     });
+ 
+     $('.testimonialdelete').on('click', function(){
+ 
+         var testimonial_delete_id = $('#testimonial_delete_id').val();
+         var token = $('input[name="_token"]').attr('value');
+ 
+         $.ajaxSetup({
+             headers: {
+                 'X-CSRF-TOKEN': token
+             }
+         });
+ 
+         $.ajax({
+             url: '/admin/testimonial/delete/' + testimonial_delete_id,
+             method: 'DELETE',
+             dataType: "json",
+             success: function(response){
+                 $('#testimonialdeletemodal').modal('hide');
+                 if (response.success == true){
+                     toastr.success(response.message);
+                 } else {
+                     toastr.error(response.message);
+                 }
+
+                 setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+             },
+ 
+             error: function(xhr, status, error) {
+                 if (xhr.status == 419) {
+                     // Handle the 419 (CSRF token mismatch) error here
+                     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                 } else {
+                     // Handle other errors
+                     toastr.error('An error occurred: ' + error);
+                 }
+             }
+         });
+ 
+     });
     
 });
