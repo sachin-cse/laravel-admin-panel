@@ -885,7 +885,7 @@ if(valid){
     
         if (s.trim() !== '') {
             $.ajax({
-                url: APP_URL+'/autocomplete/search',
+                url: APP_URL+'/admin/autocomplete/search',
                 method: 'GET',
                 data: {s: s},
                 success: function(data){
@@ -975,8 +975,10 @@ if(valid){
         var forval = parseInt($(this).attr('for'));
         // alert(forval);
         $('#rating').val(forval);
+        $('#rating2').attr('value', forval);
         $('.star').each(function(index){
             if((index+1)<=forval){
+                // alert(1);
                 $(this).removeClass('fa-star');
                 $(this).addClass('fa-star-o');
             } else {
@@ -984,7 +986,7 @@ if(valid){
                 $(this).removeClass('fa-star-o');
             }
         })
-    })
+    });
 
 
     // multiple delete
@@ -1007,7 +1009,6 @@ if(valid){
     });
 
     // ajax call for multiple delete
-
     $('.delete-all').on('click', function(e){
         var idsArr = [];
 
@@ -1077,7 +1078,7 @@ if(valid){
                     $('#imageView').html(`
                         <img src="${base_url}/upload/${data.image}" width="100px" height="100px">`);
                     $('#imageView').append(`
-                        <input type="hidden" name="hidden_image" value = "${data.image}">`);
+                        <input type="hidden" id="hidden_image" name="hidden_image" value = "${data.image}">`);
                     $('#ratingstar1').append(`<label for="testimonial_title" class="col-form-label">Rating</label><br>`)
                     for(var i = data.rating; i>=1; i--){
                         $('#ratingstar1').append(`<i class="star fa fa-star"></i>`);
@@ -1108,6 +1109,8 @@ if(valid){
         // alert($(this).serialize());
        var name = $('#name1').val();
        var description = $('#description1').val();
+       var image = $('#file1').val();
+       var update_rating = $('#rating2').val();
 
         var valid = true;
 
@@ -1124,28 +1127,30 @@ if(valid){
                 url: '/admin/testimonial/update/' + testimonialupdate_id,
                 method: 'PUT',
                 dataType: "json",
-                data:{id:testimonialupdate_id, name:name, description:description},
+                data:{id:testimonialupdate_id, name:name, description:description, image:image, update_rating:update_rating},
                 success: function(response){
                     $('#testimonialeditmodal').modal('hide');
-                    // if (response.success == true){
-                    //     toastr.success(response.message);
-                    // } else {
-                    //     toastr.error(response.message);
-                    // }
+                    if (response.success == true){
+                        toastr.success(response.message);
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 2000);
+                    } else if(response.error == true) {
+                        toastr.error(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
 
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
                 },
     
                 error: function(xhr, status, error) {
-                    // if (xhr.status == 419) {
-                    //     // Handle the 419 (CSRF token mismatch) error here
-                    //     toastr.error('CSRF token mismatch. Please refresh the page and try again.');
-                    // } else {
-                    //     // Handle other errors
-                    //     toastr.error('An error occurred: ' + error);
-                    // }
+                    if (xhr.status == 419) {
+                        // Handle the 419 (CSRF token mismatch) error here
+                        toastr.error('CSRF token mismatch. Please refresh the page and try again.');
+                    } else {
+                        // Handle other errors
+                        toastr.error('An error occurred: ' + error);
+                    }
                 }
             });
         }
@@ -1157,9 +1162,10 @@ if(valid){
         var testimonial_delete_id = $(this).data('user-id');
         $('#testimonial_delete_id').val(testimonial_delete_id);
  
-     });
- 
-     $('.testimonialdelete').on('click', function(){
+    });
+    
+    // testimonial update
+    $('.testimonialdelete').on('click', function(){
  
          var testimonial_delete_id = $('#testimonial_delete_id').val();
          var token = $('input[name="_token"]').attr('value');
@@ -1198,6 +1204,6 @@ if(valid){
              }
          });
  
-     });
+    });
     
 });

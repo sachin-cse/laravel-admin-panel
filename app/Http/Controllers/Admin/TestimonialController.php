@@ -77,13 +77,15 @@ class TestimonialController extends Controller
 
     // update testimonial
     public function testimonial_update(Request $request, $id){
-
+        // dd($request->all());
         if(!empty($id)){
             $testimonial = Testimonial::find($id);
             $testimonial->name = $request->name;
             $testimonial->description = $request->description;
+            $testimonial->rating = $request->update_rating;
             if($request->hasFile('file')){
-                if($testimonial->image){
+                if($request->image){
+                    dd(1);
                     $oldImagepath = public_path('upload') . '/' . $testimonial->image;
         
                     if(file_exists($oldImagepath)){
@@ -95,6 +97,12 @@ class TestimonialController extends Controller
                 $request->file('file')->move(public_path('upload'), $newImageName);
         
                 $testimonial->image = $newImageName;
+            }
+
+            if($testimonial->update()){
+                return response()->json(['success' => true, 'message' => 'Testimonial updated successfully']);
+            } else {
+                return response()->json(['error' => 500, 'message' => 'Internal server error']);
             }
             // $testimonial->image = $request->image;
             // dd($testimonial);

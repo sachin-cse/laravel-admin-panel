@@ -201,12 +201,12 @@ active
     
                             <div class="form-group">
                                 <label for="testimonial_title" class="col-form-label">Name</label>
-                                <input type="text" class="form-control" id="name1" name="name">
+                                <input type="text" class="form-control" id="name1" name="name" value="">
                             </div>
     
                             <div class="form-group">
                                 <label for="testimonial_title" class="col-form-label">Upload photo</label>
-                                <input type="file" class="form-control" id="file" name="file">
+                                <input type="file" class="form-control" id="file1" name="file" value="">
                             </div>
     
                             <br>
@@ -219,6 +219,16 @@ active
     
                             <div class="form-group" id="ratingstar1">
                                 <input type="hidden" name="rating" id="rating1">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="testimonial_title" class="col-form-label">Update Rating</label>
+                                <i class="star fa fa-star" for="1"></i>
+                                <i class="star fa fa-star" for="2"></i>
+                                <i class="star fa fa-star" for="3"></i>
+                                <i class="star fa fa-star" for="4"></i>
+                                <i class="star fa fa-star" for="5"></i>
+                                <input type="hidden" name="rating_update" id="rating2" value="">
                             </div>
     
                             <div class="form-group">
